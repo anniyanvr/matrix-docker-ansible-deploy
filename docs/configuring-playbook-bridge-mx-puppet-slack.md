@@ -1,47 +1,33 @@
-# Setting up MX Puppet Slack (optional)
+<!--
+SPDX-FileCopyrightText: 2019 - 2025 Slavi Pantaleev
+SPDX-FileCopyrightText: 2019 Eduardo Beltrame
+SPDX-FileCopyrightText: 2020 Rodrigo Belem
+SPDX-FileCopyrightText: 2020 Tulir Asokan
+SPDX-FileCopyrightText: 2021 Marcel Ackermann
+SPDX-FileCopyrightText: 2021 MDAD project contributors
+SPDX-FileCopyrightText: 2022 Dennis Ciba
+SPDX-FileCopyrightText: 2022 Jim Myhrberg
+SPDX-FileCopyrightText: 2022 Nikita Chernyi
+SPDX-FileCopyrightText: 2022 Vladimir Panteleev
+SPDX-FileCopyrightText: 2024 - 2025 Suguru Hirahara
 
-**Note**: bridging to [Slack](https://slack.com) can also happen via the
-[matrix-appservice-slack](configuring-playbook-bridge-appservice-slack.md)
-bridge supported by the playbook.
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
 
-The playbook can install and configure
-[mx-puppet-slack](https://github.com/Sorunome/mx-puppet-slack) for you.
+# Setting up MX Puppet Slack bridging (optional, removed)
 
-See the project page to learn what it does and why it might be useful to you.
+🪦 The playbook used to be able to install and configure [mx-puppet-slack](https://gitlab.com/mx-puppet/slack/mx-puppet-slack), but no longer includes this component, as it has been unmaintained for a long time.
 
-## Setup
+You may wish to use the [Mautrix Slack bridge](https://github.com/mautrix/slack) instead.
 
-To enable the [Slack](https://slack.com/) bridge:
+## Uninstalling the bridge manually
 
-1. Follow the
-   [OAuth credentials](https://github.com/Sorunome/mx-puppet-slack#option-2-oauth)
-   instructions to create a new Slack app, setting the redirect URL to
-   `https://matrix.YOUR_DOMAIN/slack/oauth`.
-2. Update your `vars.yml` with the following:
-    ```yaml
-    matrix_mx_puppet_slack_enabled: true
-    # Client ID must be quoted so YAML does not parse it as a float.
-    matrix_mx_puppet_slack_oauth_client_id: "<SLACK_APP_CLIENT_ID>"
-    matrix_mx_puppet_slack_oauth_client_secret: "<SLACK_APP_CLIENT_SECRET>"
-    ```
-3. Run playbooks with `setup-all` and `start` tags:
-    ```
-    ansible-playbook -i inventory/hosts setup.yml --tags=setup-all,start
-    ```
+If you still have the MX Puppet Slack bridge installed on your Matrix server, the playbook can no longer help you uninstall it and you will need to do it manually. To uninstall manually, run these commands on the server:
 
-## Usage
+```sh
+systemctl disable --now matrix-mx-puppet-slack.service
 
-Once the bot is enabled you need to start a chat with `Slack Puppet Bridge` with
-the handle `@_slackpuppet_bot:YOUR_DOMAIN` (where `YOUR_DOMAIN` is your base
-domain, not the `matrix.` domain).
+rm -rf /matrix/mx-puppet-slack
 
-Three authentication methods are available, Legacy Token, OAuth and xoxc token.
-See mx-puppet-slack [documentation](https://github.com/Sorunome/mx-puppet-slack)
-for more information about how to configure the bridge.
-
-Once logged in, send `list` to the bot user to list the available rooms.
-
-Clicking rooms in the list will result in you receiving an invitation to the
-bridged room.
-
-Also send `help` to the bot to see the commands available.
+/matrix/postgres/bin/cli-non-interactive -c 'DROP DATABASE matrix_mx_puppet_slack;'
+```

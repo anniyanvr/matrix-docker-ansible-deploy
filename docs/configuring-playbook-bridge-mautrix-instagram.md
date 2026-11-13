@@ -1,17 +1,33 @@
-# Setting up Mautrix Instagram (optional)
+<!--
+SPDX-FileCopyrightText: 2019 - 2025 Slavi Pantaleev
+SPDX-FileCopyrightText: 2019 Eduardo Beltrame
+SPDX-FileCopyrightText: 2019 Hugues Morisset
+SPDX-FileCopyrightText: 2020 Tulir Asokan
+SPDX-FileCopyrightText: 2021 - 2022 MDAD project contributors
+SPDX-FileCopyrightText: 2021 Aaron Raimist
+SPDX-FileCopyrightText: 2021 Marcus Proest
+SPDX-FileCopyrightText: 2022 Dennis Ciba
+SPDX-FileCopyrightText: 2022 László Várady
+SPDX-FileCopyrightText: 2022 Vladimir Panteleev
+SPDX-FileCopyrightText: 2024 - 2025 Suguru Hirahara
 
-The playbook can install and configure [mautrix-instagram](https://github.com/mautrix/instagram) for you.
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
 
-See the project's [documentation](https://docs.mau.fi/bridges/python/instagram/index.html) to learn what it does and why it might be useful to you.
+# Setting up Mautrix Instagram bridging (optional, removed)
 
-```yaml
-matrix_mautrix_instagram_enabled: true
+🪦 The playbook used to be able to install and configure [mautrix-instagram](https://github.com/mautrix/instagram), but no longer includes this component, as it has been deprecated in favor of the [mautrix-meta](https://github.com/mautrix/meta) Messenger/Instagram bridge.
+
+The mautrix-meta bridge can be [installed using this playbook](configuring-playbook-bridge-mautrix-meta-messenger.md).
+
+## Uninstalling the bridge manually
+
+If you still have the bridge installed on your Matrix server, the playbook can no longer help you uninstall it and you will need to do it manually. To uninstall manually, run these commands on the server:
+
+```sh
+systemctl disable --now matrix-mautrix-instagram.service
+
+rm -rf /matrix/mautrix-instagram
+
+/matrix/postgres/bin/cli-non-interactive -c 'DROP DATABASE matrix_mautrix_instagram;'
 ```
-
-## Usage
-
-You then need to start a chat with `@instagrambot:YOUR_DOMAIN` (where `YOUR_DOMAIN` is your base domain, not the `matrix.` domain).
-
-Send `login YOUR_INSTAGRAM_EMAIL_ADDRESS YOUR_INSTAGRAM_PASSWORD` to the bridge bot to enable bridging for your instagram/Messenger account.
-
-You can learn more here about authentication from the bridge's [official documentation on Authentication](https://docs.mau.fi/bridges/python/instagram/authentication.html).

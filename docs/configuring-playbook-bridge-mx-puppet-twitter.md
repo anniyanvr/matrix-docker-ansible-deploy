@@ -1,36 +1,29 @@
-# Setting up MX Puppet Twitter (optional)
+<!--
+SPDX-FileCopyrightText: 2019 - 2025 Slavi Pantaleev
+SPDX-FileCopyrightText: 2019 Eduardo Beltrame
+SPDX-FileCopyrightText: 2020 Tulir Asokan
+SPDX-FileCopyrightText: 2021 MDAD project contributors
+SPDX-FileCopyrightText: 2022 Dennis Ciba
+SPDX-FileCopyrightText: 2022 Vladimir Panteleev
+SPDX-FileCopyrightText: 2024 - 2025 Suguru Hirahara
 
-**Note**: bridging to [Twitter](https://twitter.com/) can also happen via the [mautrix-twitter](configuring-playbook-bridge-mautrix-twitter.md) bridge supported by the playbook.
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
 
-The playbook can install and configure
-[mx-puppet-twitter](https://github.com/Sorunome/mx-puppet-twitter) for you.
+# Setting up MX Puppet Twitter bridging (optional, removed)
 
-See the project page to learn what it does and why it might be useful to you.
+🪦 The playbook used to be able to install and configure [mx-puppet-twitter](https://github.com/Sorunome/mx-puppet-twitter), but no longer includes this component, as it has been unmaintained for a long time.
 
-To enable the [Twitter](https://twitter.com) bridge, make an app on [developer.twitter.com](https://developer.twitter.com/en/apps)
-and fill out the following playbook configuration.
+You may wish to use the [Mautrix Twitter bridge](https://github.com/mautrix/twitter) instead.
 
-```yaml
-matrix_mx_puppet_twitter_enabled: true
-matrix_mx_puppet_twitter_consumer_key: ''
-matrix_mx_puppet_twitter_consumer_secret: ''
-matrix_mx_puppet_twitter_access_token: ''
-matrix_mx_puppet_twitter_access_token_secret: ''
-matrix_mx_puppet_twitter_environment: ''
+## Uninstalling the bridge manually
+
+If you still have the MX Puppet Twitter bridge installed on your Matrix server, the playbook can no longer help you uninstall it and you will need to do it manually. To uninstall manually, run these commands on the server:
+
+```sh
+systemctl disable --now matrix-mx-puppet-twitter.service
+
+rm -rf /matrix/mx-puppet-twitter
+
+/matrix/postgres/bin/cli-non-interactive -c 'DROP DATABASE matrix_mx_puppet_twitter;'
 ```
-
-
-## Usage
-
-Once the bot is enabled you need to start a chat with `Twitter Puppet Bridge` with
-the handle `@_twitterpuppet_bot:YOUR_DOMAIN` (where `YOUR_DOMAIN` is your base
-domain, not the `matrix.` domain).
-
-To log in, use `link` and click the link.
-
-Once logged in, send `list` to the bot user to list the available rooms.
-
-Clicking rooms in the list will result in you receiving an invitation to the
-bridged room.
-
-Also send `help` to the bot to see the commands available.
